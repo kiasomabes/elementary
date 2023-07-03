@@ -477,6 +477,13 @@ def report(
     help="The URL the for the report at the Slack summary message (if not provided edr will assume the default bucket website url).",
 )
 @click.option(
+    "--slack-webhook",
+    "-sw",
+    type=str,
+    default=None,
+    help="A slack webhook URL for sending alerts to a specific channel.",
+)
+@click.option(
     "--disable-passed-test-metrics",
     type=bool,
     default=False,
@@ -529,6 +536,7 @@ def send_report(
     disable,
     include,
     target_path,
+    slack_webhook,
 ):
     """
     Generate and send the report to an external platform.
@@ -556,6 +564,7 @@ def send_report(
         gcs_bucket_name=gcs_bucket_name,
         slack_report_url=slack_report_url,
         env=env,
+        slack_webhook=slack_webhook
     )
     anonymous_tracking = AnonymousCommandLineTracking(config)
     anonymous_tracking.set_env("use_select", bool(select))

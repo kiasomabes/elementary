@@ -160,7 +160,9 @@ class Config:
     @property
     def has_send_report_platform(self):
         return (
+            # self.has_slack
             (self.slack_token and self.slack_channel_name)
+            or self.slack_webhook
             or self.has_s3
             or self.has_gcs
         )
@@ -197,6 +199,7 @@ class Config:
     def validate_send_report(self):
         if not self.has_send_report_platform:
             raise InvalidArgumentsError(
+                # TODO: Update this with Slack webhook instructions
                 "You must provide a platform to upload the report to (Slack token / S3 / GCS)."
             )
 
